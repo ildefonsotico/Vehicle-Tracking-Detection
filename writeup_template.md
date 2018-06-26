@@ -156,18 +156,12 @@ I recorded the positions of positive detections in each frame of the video.  Fro
 ![evolution_test1_heatmap](https://user-images.githubusercontent.com/19958282/41939800-348b487c-796d-11e8-9419-547c447e711b.png)
 ![evolution_test3_heatmap](https://user-images.githubusercontent.com/19958282/41939802-34cc8ba2-796d-11e8-8d9d-02b28900a965.png)
 
-
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
-
-
+#### 3. The final test images processed.
+Here will be shown the test images processed.
+![test5_processed](https://user-images.githubusercontent.com/19958282/41940314-b655be22-796e-11e8-927a-514c5a824172.png)
+![test1_processed](https://user-images.githubusercontent.com/19958282/41940315-b6968894-796e-11e8-8ece-34c82ed2cddc.png)
+![test3_processed](https://user-images.githubusercontent.com/19958282/41940316-b6e2083c-796e-11e8-8b42-1b4eaa1947e8.png)
+![test4_processed](https://user-images.githubusercontent.com/19958282/41940318-b7283050-796e-11e8-9467-32a8dc13ab90.png)
 
 ---
 
@@ -175,5 +169,6 @@ I recorded the positions of positive detections in each frame of the video.  Fro
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+It is pretty important to found the best method in order to get more accuracy in terms of detection and also decrease the noise.
+There are a lot of options to explore, since parameters until algorithm like (SVN, Decision Three, etc). It's pretty important to explore more possibilities and more features to trainning the network. 
 
