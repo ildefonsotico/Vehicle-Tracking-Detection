@@ -50,7 +50,11 @@ I then explored different color spaces and different `skimage.hog()` parameters 
 
 Here is an example using the `YCrCb` color space and HOG parameters of `orientations=15`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`, `hog channel=All`:
 ![car_hog_y](https://user-images.githubusercontent.com/19958282/41936095-6a48c148-7962-11e8-8ddf-f46f87d3f708.png)
-
+![car_hog_cr](https://user-images.githubusercontent.com/19958282/41936214-e69ec09e-7962-11e8-8f74-8087aa3de9b5.png)
+![car_hog_cb](https://user-images.githubusercontent.com/19958282/41936310-2a5a13e2-7963-11e8-9601-b90dd6b53127.png)
+![non_car_hog_y](https://user-images.githubusercontent.com/19958282/41936478-ae76056e-7963-11e8-8c96-ea5834d04847.png)
+![non_car_hog_cr](https://user-images.githubusercontent.com/19958282/41936487-b3a5a512-7963-11e8-8b7d-aeadf8111e5b.png)
+![non_car_hog_cb](https://user-images.githubusercontent.com/19958282/41936570-e82ce3b8-7963-11e8-9a26-dd1aaab41e4f.png)
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
