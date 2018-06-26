@@ -58,11 +58,66 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters. I started `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`, `hog channel=0` and `color_space=HSV` but i got a lot of noise into the image. I changed the parameters a lot of time to see whether if fits good all frames.
+I also changed the parameters to get more features `orientations=15`, `pixels_per_cell=(4, 4)` and `cells_per_block=(2, 2)`, `hog channel=All` and `color_space=YCrCb`. The approach got better but still had some noises in a specifics frames. I solved the issues by the windows and scale.
+
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+First, I extract features from the vehicles and non-vehicles images. I used HoG features, color features (YCrCb), spatial features and also a histogram of the features. I trained a linear SVM using.
+
+```Python
+color_space    = 'YCrCb'    # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+orient         = 15          # HOG orientations
+pix_per_cell   = 8          # HOG pixels per cell
+cell_per_block = 2          # HOG cells per block
+hog_channel    = "ALL"          # Can be 0, 1, 2, or "ALL"
+spatial_size   = (32, 32)   # Spatial binning dimensions
+hist_bins      = 32         # Number of histogram bins
+spatial_feat   = True       # Spatial features on or off
+hist_feat      = True       # Histogram features on or off
+hog_feat       = True       # HOG features on or off
+```
+
+```Python
+y = np.hstack((np.ones(len(car_features)), np.zeros(len(non_car_features))))
+
+rand_state = np.random.randint(0, 100)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=rand_state)
+
+print('Split the dataset in two part. 20% will be used to test dataset')
+print('Normalizing dataset')
+# Fit a per-column scaler
+X_scaler = StandardScaler().fit(X_train)
+# Apply the scaler to X
+scaled_X = X_scaler.transform(X_train)
+scaled_X_test = X_scaler.transform(X_test)
+
+
+
+print('Using spatial binning of:',spatial_size,
+    'and', hist_bins,'histogram bins')
+print('Feature vector length:', len(X_train[0]))
+# Use a linear SVC
+svc = LinearSVC()
+# Check the training time for the SVC
+print('Starting the training')
+t=time.time()
+svc.fit(X_train, y_train)
+t2 = time.time()
+print('Training done')
+print(round(t2-t, 2), 'Seconds to train SVC...')
+# Check the score of the SVC
+print('Test Accuracy of SVC = ', round(svc.score(X_test, y_test), 4))
+# Check the prediction time for a single sample
+t=time.time()
+n_predict = 50
+print('My SVC predicts: ', svc.predict(X_test[0:n_predict]))
+print('For these',n_predict, 'labels: ', y_test[0:n_predict])
+t2 = time.time()
+print(round(t2-t, 5), 'Seconds to predict', n_predict,'labels with SVC')
+```
 
 ### Sliding Window Search
 
