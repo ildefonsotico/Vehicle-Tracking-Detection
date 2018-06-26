@@ -43,8 +43,7 @@ The code where we extract features (including HoG) can be found in lines # 43 th
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
-![image0001](https://user-images.githubusercontent.com/19958282/41934552-67c75466-795d-11e8-9382-55003b050ed5.png)
-![image59](https://user-images.githubusercontent.com/19958282/41934574-74f555b6-795d-11e8-910a-195f5be982eb.png)
+![car-non_car](https://user-images.githubusercontent.com/19958282/41940643-dfa898c0-796f-11e8-9a78-95d5e54daf68.png)
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
