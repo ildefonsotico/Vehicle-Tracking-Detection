@@ -123,15 +123,22 @@ print(round(t2-t, 5), 'Seconds to predict', n_predict,'labels with SVC')
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+I decided to search from `pixel=350 to pixel=700`. Along this range I changed the scale according the pixel was reaching the bottom. I started using a scale 0.9 and I increased by each window. The scale used was:
+```Python
+ystart_ystop_scale = [(350, 400, 0.9),(400, 500, 1.), (400, 600, 1.5),(500, 650, 2.0), (550, 700, 2.5)]
+```
+Actually I have tried a several attempts by different number of the windows and also the sizes of them. 
 
-![alt text][image3]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+![test1_rectangles](https://user-images.githubusercontent.com/19958282/41938449-8441438e-7969-11e8-9cca-aa00c18c5ae8.png)
+![test4_rectangles](https://user-images.githubusercontent.com/19958282/41938450-8485a858-7969-11e8-8698-087827ef9a91.png)
+![test5_rectangles](https://user-images.githubusercontent.com/19958282/41938452-84cc34c6-7969-11e8-9b55-627402d8ba2b.png)
+![test_rectangles](https://user-images.githubusercontent.com/19958282/41938453-850ff8d2-7969-11e8-804c-28b184e267fe.png)
 
-![alt text][image4]
+
 ---
 
 ### Video Implementation
@@ -142,9 +149,13 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions (Threshold used was 8). I constructed bounding boxes to cover the area of each blob detected.  Here are the examples of the image with their respective heatmap before and after the threshold.
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+![evolution_test4_heatmap](https://user-images.githubusercontent.com/19958282/41939797-341315e6-796d-11e8-9d61-5d0e1c63376b.png)
+![evolution_test5_heatmap](https://user-images.githubusercontent.com/19958282/41939798-344d856e-796d-11e8-946c-21bef2a894e5.png)
+![evolution_test1_heatmap](https://user-images.githubusercontent.com/19958282/41939800-348b487c-796d-11e8-9419-547c447e711b.png)
+![evolution_test3_heatmap](https://user-images.githubusercontent.com/19958282/41939802-34cc8ba2-796d-11e8-8d9d-02b28900a965.png)
+
 
 ### Here are six frames and their corresponding heatmaps:
 
