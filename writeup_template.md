@@ -144,7 +144,7 @@ Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spat
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](https://youtu.be/UaJWaO9KpZI)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -169,6 +169,8 @@ Here will be shown the test images processed.
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-It is pretty important to found the best method in order to get more accuracy in terms of detection and also decrease the noise.
+It is pretty important to search the best method in order to get more accuracy in terms of detection and also decrease the noise.
 There are a lot of options to explore, since parameters until algorithm like (SVN, Decision Three, etc). It's pretty important to explore more possibilities and more features to trainning the network. 
+
+It also will be posted different networks weights done.
 
