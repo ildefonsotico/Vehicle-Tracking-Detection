@@ -38,18 +38,19 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+The project consist in three files - `utilities.py`, `machinelearning.py`, `vehicle_detection.py`
+The code where we extract features (including HoG) can be found in lines # 43 through 54 # of the file called `machinelearning.py`.  
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
-![alt text][image1]
+![image0001](https://user-images.githubusercontent.com/19958282/41934552-67c75466-795d-11e8-9382-55003b050ed5.png)
+![image59](https://user-images.githubusercontent.com/19958282/41934574-74f555b6-795d-11e8-910a-195f5be982eb.png)
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is an example using the `YCrCb` color space and HOG parameters of `orientations=15`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`, `hog channel=All`:
+![car_hog_y](https://user-images.githubusercontent.com/19958282/41936095-6a48c148-7962-11e8-8ddf-f46f87d3f708.png)
 
-
-![alt text][image2]
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
