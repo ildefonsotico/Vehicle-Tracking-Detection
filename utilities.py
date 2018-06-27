@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 
 out_path='output_images\\'
 # Define a function to return HOG features and visualization
-def get_hog_features_2(img, orient, pix_per_cell, cell_per_block,
+def get_hog_features(img, orient, pix_per_cell, cell_per_block,
                      vis=False, feature_vec=True, verbose=False, name=''):
     # Call with two outputs if vis==True
     if vis == True:
@@ -34,7 +34,7 @@ def get_hog_features_2(img, orient, pix_per_cell, cell_per_block,
 
         return features
 
-def get_hog_features(img, orient, pix_per_cell, cell_per_block,
+def get_hog_features_2(img, orient, pix_per_cell, cell_per_block,
                      vis=False, feature_vec=True, verbose=False, name=''):
     # Call with two outputs if vis==True
     if vis == True:
@@ -172,6 +172,7 @@ def slide_window(img, x_start_stop=[None, None], y_start_stop=[None, None],
             # Append window position to list
             window_list.append(((startx, starty), (endx, endy)))
     # Return the list of windows
+
     return window_list
 
 
@@ -293,17 +294,33 @@ def convert_color(img, conv='RGB2YCrCb'):
         return cv2.cvtColor(img, cv2.COLOR_RGB2LUV)
 
 
-def find_cars_2(img, svc, X_scaler, orient, pix_per_cell, cell_per_block,
+def find_cars_2(img, svc, X_scaler, orient, cspace, pix_per_cell, cell_per_block,
               spatial_size, hist_bins):
     draw_img = np.copy(img)
     img = img.astype(np.float32) / 255
 
-    ystart_ystop_scale = [(380, 480, 1), (400, 600, 1.5), (500, 700, 2.5)]
+    ystart_ystop_scale = [(350, 400, 0.9),(400, 500, 1.), (400, 600, 1.5),(500, 650, 2.0), (550, 700, 2.5)]
+    #ystart_ystop_scale = [ (380, 480, 1), (400, 600, 1.5), (500, 700, 2.5)]
     win_pos = []
     # ADD MULTISCALING:
     for (ystart, ystop, scale) in ystart_ystop_scale:
         img_tosearch = img[ystart:ystop, :, :]
-        ctrans_tosearch = convert_color(img_tosearch, conv='RGB2YCrCb')
+
+        # apply color conversion if other than 'RGB'
+        if cspace != 'RGB':
+            if cspace == 'HSV':
+                ctrans_tosearch = cv2.cvtColor(img_tosearch, cv2.COLOR_RGB2HSV)
+            elif cspace == 'LUV':
+                ctrans_tosearch = cv2.cvtColor(img_tosearch, cv2.COLOR_RGB2LUV)
+            elif cspace == 'HLS':
+                ctrans_tosearch = cv2.cvtColor(img_tosearch, cv2.COLOR_RGB2HLS)
+            elif cspace == 'YUV':
+                ctrans_tosearch = cv2.cvtColor(img_tosearch, cv2.COLOR_RGB2YUV)
+            elif cspace == 'YCrCb':
+                ctrans_tosearch = cv2.cvtColor(img_tosearch, cv2.COLOR_RGB2YCrCb)
+        else:
+            ctrans_tosearch = np.copy(image)
+    #ctrans_tosearch = convert_color(img_tosearch, conv='RGB2YCrCb')
 
         if scale != 1:
             imshape = ctrans_tosearch.shape
@@ -365,3 +382,70 @@ def find_cars_2(img, svc, X_scaler, orient, pix_per_cell, cell_per_block,
                     win_pos.append(((xbox_left, ytop_draw + ystart),
                                     (xbox_left + win_draw, ytop_draw + win_draw + ystart)))
     return draw_img, win_pos
+
+
+def cars_detection(img):
+    out_img, win_pos = find_cars_2(img, svc, X_scaler, orient, pix_per_cell,
+                                 cell_per_block, spatial_size, hist_bins)
+
+    # Read in image similar to one shown above
+    heat = np.zeros_like(img[:, :, 0]).astype(np.float)
+
+    # AVG boxes
+    last_hot_labels.put_labels(win_pos)
+    win_pos = last_hot_labels.get_labels()
+
+    # Add heat to each box in box list
+    heat = add_heat(heat, win_pos)
+    # Apply threshold to help remove false positives
+    heat = apply_threshold(heat, 22)
+    # Visualize the heatmap when displaying
+    heatmap = np.clip(heat, 0, 255)
+    # Find final boxes from heatmap using label function
+    labels = label(heatmap)
+    draw_img = draw_labeled_bboxes(np.copy(img), labels)
+
+    # plot_row2(img, out_img, 'Source', 'All Detections')
+    # plot_row2(draw_img, heatmap, 'Car Positions', 'Heat Map')
+    return labels, heatmap
+
+def add_heat(heatmap, bbox_list):
+    # Iterate through list of bboxes
+    for box in bbox_list:
+        # Add += 1 for all pixels inside each bbox
+        # Assuming each "box" takes the form ((x1, y1), (x2, y2))
+        heatmap[box[0][1]:box[1][1], box[0][0]:box[1][0]] += 1
+    # Return updated heatmap
+    return heatmap
+
+def apply_threshold(heatmap, threshold):
+    # Zero out pixels below the threshold
+    heatmap[heatmap <= threshold] = 0
+    # Return thresholded map
+    return heatmap
+
+def draw_labeled_bboxes(img, labels):
+    # Iterate through all detected cars
+    for car_number in range(1, labels[1]+1):
+        # Find pixels with each car_number label value
+        nonzero = (labels[0] == car_number).nonzero()
+        # Identify x and y values of those pixels
+        nonzeroy = np.array(nonzero[0])
+        nonzerox = np.array(nonzero[1])
+        # Define a bounding box based on min/max x and y
+        bbox = ((np.min(nonzerox), np.min(nonzeroy)), (np.max(nonzerox), np.max(nonzeroy)))
+        # Draw the box on the image
+        cv2.rectangle(img, bbox[0], bbox[1], (0,0,255), 6)
+    # Return the image
+    return img
+
+def cropp_blobs(img)
+    
+
+def draw_res(img, labels):
+
+
+    result = draw_labeled_bboxes(np.copy(img), labels)
+
+
+    return result

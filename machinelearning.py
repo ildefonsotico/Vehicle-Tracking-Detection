@@ -17,8 +17,8 @@ noncars = glob.glob('non-vehicles/**/*.png', recursive=True)
 print('Cars: {}'.format(len(cars)))
 print('Non-Cars: {}'.format(len(noncars)))
 
-color_space    = 'YUV'    # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
-orient         = 9          # HOG orientations
+color_space    = 'YCrCb'    # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
+orient         = 15          # HOG orientations
 pix_per_cell   = 8          # HOG pixels per cell
 cell_per_block = 2          # HOG cells per block
 hog_channel    = "ALL"          # Can be 0, 1, 2, or "ALL"
@@ -28,15 +28,18 @@ spatial_feat   = True       # Spatial features on or off
 hist_feat      = True       # Histogram features on or off
 hog_feat       = True       # HOG features on or off
 
-car = mpimg.imread(cars[98])
-noncar = mpimg.imread(noncars[89])
+car = mpimg.imread(cars[176])
+noncar = mpimg.imread(noncars[175])
 
-get_hog_features(car[:,:,0], orient, pix_per_cell, cell_per_block, True, True, True, 'car_R')
-get_hog_features(car[:,:,1], orient, pix_per_cell, cell_per_block, True, True, True, 'car_G')
-get_hog_features(car[:,:,2], orient, pix_per_cell, cell_per_block, True, True, True, 'car_B')
-get_hog_features(noncar[:,:,0], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_R')
-get_hog_features(noncar[:,:,1], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_G')
-get_hog_features(noncar[:,:,2], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_B')
+car = cv2.cvtColor(car, cv2.COLOR_RGB2YCrCb)
+noncar = cv2.cvtColor(noncar, cv2.COLOR_RGB2YCrCb)
+get_hog_features(car, orient, pix_per_cell, cell_per_block, True, True, True, 'original')
+get_hog_features(car[:,:,0], orient, pix_per_cell, cell_per_block, True, True, True, 'car_Y')
+get_hog_features(car[:,:,1], orient, pix_per_cell, cell_per_block, True, True, True, 'car_Cr')
+get_hog_features(car[:,:,2], orient, pix_per_cell, cell_per_block, True, True, True, 'car_Cb')
+get_hog_features(noncar[:,:,0], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_Y')
+get_hog_features(noncar[:,:,1], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_Cr')
+get_hog_features(noncar[:,:,2], orient, pix_per_cell, cell_per_block, True, True, True, 'non-car_Cb')
 
 print('Data to be used in the project is done')
 print('Extracting features about car image')
